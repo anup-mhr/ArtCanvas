@@ -66,7 +66,7 @@ export default function Signup() {
               Signup
             </Button>
 
-            <Link to="/signup" className="hover:underline text-xs">
+            <Link to="/login" className="hover:underline text-xs">
               Already have an account? Sign-in
             </Link>
           </form>

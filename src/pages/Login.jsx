@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Form } from "../components/ui/form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CustomFormField from "@/components/CustomFormField";
 
 const formSchema = z.object({
@@ -26,6 +26,8 @@ const formSchema = z.object({
 });
 
 export default function Login() {
+  const navigate = useNavigate();
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -38,6 +40,7 @@ export default function Login() {
     try {
       console.log(values);
       localStorage.setItem("isLogin", 1);
+      navigate("/dashboard", { Replace: true });
     } catch (error) {
       console.log(error);
     }
