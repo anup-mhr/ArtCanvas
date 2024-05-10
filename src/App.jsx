@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Layout from "./pages/theme/Layout";
 import Canvas from "./pages/Canvas";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   return (
@@ -12,7 +13,10 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<PrivateRoute component={Layout} />}>
-            <Route path="/dashboard" element={<h1>sdhuhu</h1>} />
+            <Route
+              path="/dashboard"
+              element={<PrivateRoute component={Dashboard} />}
+            />
             <Route
               path="/canvas"
               element={<PrivateRoute component={Canvas} />}

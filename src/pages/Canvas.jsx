@@ -224,6 +224,17 @@ export default function Canvas() {
     setElement((prev) => prev.filter((el) => el !== selectedElement));
   };
 
+  function saveCanvas() {
+    const date = new Date();
+    const canvasSave = canvasRef.current.toDataURL("image/png");
+    // const canvasSave = canvasRef.current.toDataURL("image/webp", 0.2);   USE THIS FOR PREVIEW iMG
+    var a = document.createElement("a");
+    console.log("dataurl", canvasSave);
+    a.href = canvasSave;
+    a.download = `image-${date.getTime()}.png`;
+    a.click();
+  }
+
   return (
     <>
       <Tools
@@ -231,6 +242,7 @@ export default function Canvas() {
         setType={setType}
         clearCanvas={handleClearCanvas}
         deleteElement={deleteElement}
+        saveCanvas={saveCanvas}
       />
       <canvas
         id="canvas"
