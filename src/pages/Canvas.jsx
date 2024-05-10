@@ -1,12 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import Tools from "@/components/Tools";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
 export default function Canvas() {
+  const { canvasId } = useParams();
   const [type, setType] = useState("line");
-  const [element, setElement] = useState(
-    JSON.parse(localStorage.getItem("elements")) || []
-  );
+  const [element, setElement] = useState(() => {
+    const data = JSON.parse(localStorage.getItem("data"));
+    if (data?.element && data.canvasId === canvasId) return data.element;
+    return [];
+  });
   const [selectedElement, setSelectedElement] = useState(null);
   const [shapesInitialPosition, setShapesInitialPosition] = useState(null);
 
@@ -31,8 +36,24 @@ export default function Canvas() {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("elements", JSON.stringify(element));
-  }, [element]);
+    async function fetchElements() {
+      try {
+        const data = await axios.get(
+          `http://localhost:3000/canvass/${canvasId}`
+        );
+        if (data?.element) {
+          setElement(data.element);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchElements();
+  }, [canvasId]);
+
+  useEffect(() => {
+    localStorage.setItem("data", JSON.stringify({ canvasId, element }));
+  }, [element, canvasId]);
 
   useEffect(() => {
     if (ctxRef.current) {

@@ -18,7 +18,7 @@ function App() {
               element={<PrivateRoute component={Dashboard} />}
             />
             <Route
-              path="/canvas"
+              path="/canvas/:canvasId"
               element={<PrivateRoute component={Canvas} />}
             />
           </Route>
