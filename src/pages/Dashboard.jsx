@@ -24,8 +24,8 @@ export default function Dashboard() {
         {data.map((canvas) => (
           <PreviewCanvas
             key={canvas.id}
-            imgData={canvas.img}
-            canvas_id={canvas.id}
+            canvasData={canvas}
+            setData={setData}
           />
         ))}
       </div>
