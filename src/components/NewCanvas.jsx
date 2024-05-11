@@ -1,13 +1,17 @@
+import { addCanvas } from "@/services/canvas.service";
+import { addImages } from "@/services/canvasImg.service";
 import { Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 
 export default function NewCanvas() {
   const navigate = useNavigate();
-  const createNewCanvas = () => {
+  const createNewCanvas = async () => {
     const id = uuidv4();
     localStorage.setItem("canvasID", id);
-    //Todo:create canvas in backend
+    const data = { id, element: [] };
+    addCanvas(data);
+    await addImages({ id, img: " " });
     navigate(`/canvas/${id}`);
   };
   return (

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Form } from "../components/ui/form";
 import { Link, useNavigate } from "react-router-dom";
 import CustomFormField from "@/components/CustomFormField";
+import { getUser } from "@/services/users.service";
 
 const formSchema = z.object({
   email: z
@@ -38,7 +39,13 @@ export default function Login() {
 
   const onSubmit = async (values) => {
     try {
-      console.log(values);
+      const data = await getUser(values.email, values.password);
+      if (data.length === 0) {
+        alert("Email or Password is wrong");
+        return;
+      }
+      localStorage.setItem("username", data[0].username);
+      localStorage.setItem("userId", data[0].id);
       localStorage.setItem("isLogin", 1);
       navigate("/dashboard", { Replace: true });
     } catch (error) {

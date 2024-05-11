@@ -3,8 +3,9 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Form } from "../components/ui/form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CustomFormField from "@/components/CustomFormField";
+import { addUser } from "@/services/users.service";
 
 const formSchema = z.object({
   username: z
@@ -34,6 +35,8 @@ const formSchema = z.object({
 });
 
 export default function Signup() {
+  const navigate = useNavigate();
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -45,8 +48,8 @@ export default function Signup() {
 
   const onSubmit = async (values) => {
     try {
-      console.log(values);
-      //   localStorage.setItem("isLogin", 1);
+      addUser(values);
+      navigate("/login", { replace: true });
     } catch (error) {
       console.log(error);
     }

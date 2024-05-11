@@ -2,16 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import Tools from "@/components/Tools";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import { getCanvasById, updateCanvas } from "@/services/canvas.service";
+import { updateImages } from "@/services/canvasImg.service";
 
 export default function Canvas() {
   const { canvasId } = useParams();
   const [type, setType] = useState("line");
-  const [element, setElement] = useState(() => {
-    const data = JSON.parse(localStorage.getItem("data"));
-    if (data?.element && data.canvasId === canvasId) return data.element;
-    return [];
-  });
+  const [element, setElement] = useState([]);
   const [selectedElement, setSelectedElement] = useState(null);
   const [shapesInitialPosition, setShapesInitialPosition] = useState(null);
 
@@ -24,6 +21,8 @@ export default function Canvas() {
 
   const canvasRef = useRef(null);
   const ctxRef = useRef(null);
+
+  const userId = localStorage.getItem("userId");
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -38,12 +37,9 @@ export default function Canvas() {
   useEffect(() => {
     async function fetchElements() {
       try {
-        const data = await axios.get(
-          `http://localhost:3000/canvass/${canvasId}`
-        );
-        if (data?.element) {
-          setElement(data.element);
-        }
+        const data = await getCanvasById(canvasId);
+        localStorage.setItem("data", JSON.stringify(data[0]));
+        setElement(data[0].element);
       } catch (error) {
         console.log(error);
       }
@@ -52,8 +48,13 @@ export default function Canvas() {
   }, [canvasId]);
 
   useEffect(() => {
-    localStorage.setItem("data", JSON.stringify({ canvasId, element }));
-  }, [element, canvasId]);
+    localStorage.setItem("data", JSON.stringify({ id: canvasId, element }));
+    const canvasSave = canvasRef.current.toDataURL("image/webp", 0.2);
+    return async () => {
+      updateCanvas(canvasId, { id: canvasId, userId, element });
+      updateImages(canvasId, { id: canvasId, userId, img: canvasSave });
+    };
+  }, [element, canvasId, userId]);
 
   useEffect(() => {
     if (ctxRef.current) {
@@ -248,7 +249,6 @@ export default function Canvas() {
   function saveCanvas() {
     const date = new Date();
     const canvasSave = canvasRef.current.toDataURL("image/png");
-    // const canvasSave = canvasRef.current.toDataURL("image/webp", 0.2);   USE THIS FOR PREVIEW iMG
     var a = document.createElement("a");
     console.log("dataurl", canvasSave);
     a.href = canvasSave;

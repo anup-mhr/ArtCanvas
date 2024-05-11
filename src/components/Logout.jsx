@@ -1,10 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function Logout() {
+  const navigate = useNavigate();
   const handleLogout = () => {
-    // logout();
-    // window.location.reload();
+    localStorage.clear();
+    navigate("/login", { replace: true });
   };
   return (
     <Button
