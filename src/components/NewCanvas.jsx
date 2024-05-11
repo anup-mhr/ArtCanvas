@@ -1,5 +1,6 @@
 import { addCanvas } from "@/services/canvas.service";
 import { addImages } from "@/services/canvasImg.service";
+import toastMsg from "@/utils/toastMsg";
 import { Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
@@ -7,12 +8,16 @@ import { v4 as uuidv4 } from "uuid";
 export default function NewCanvas() {
   const navigate = useNavigate();
   const createNewCanvas = async () => {
-    const id = uuidv4();
-    localStorage.setItem("canvasID", id);
-    const data = { id, element: [] };
-    addCanvas(data);
-    await addImages({ id, img: " " });
-    navigate(`/canvas/${id}`);
+    try {
+      const id = uuidv4();
+      localStorage.setItem("canvasID", id);
+      const data = { id, element: [] };
+      addCanvas(data);
+      await addImages({ id, img: " " });
+      navigate(`/canvas/${id}`);
+    } catch (error) {
+      toastMsg(error.message, "☠");
+    }
   };
   return (
     <div

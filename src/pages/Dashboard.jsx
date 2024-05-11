@@ -1,6 +1,7 @@
 import NewCanvas from "@/components/NewCanvas";
 import PreviewCanvas from "@/components/PreviewCanvas";
 import { getAllImagesByUser } from "@/services/canvasImg.service";
+import toastMsg from "@/utils/toastMsg";
 import { useEffect, useState } from "react";
 
 export default function Dashboard() {
@@ -12,8 +13,8 @@ export default function Dashboard() {
       .then((data) => {
         setData(data);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        toastMsg(error.message, "☠");
       });
   }, []);
 

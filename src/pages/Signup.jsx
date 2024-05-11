@@ -6,6 +6,7 @@ import { Form } from "../components/ui/form";
 import { Link, useNavigate } from "react-router-dom";
 import CustomFormField from "@/components/CustomFormField";
 import { addUser } from "@/services/users.service";
+import toastMsg from "@/utils/toastMsg";
 
 const formSchema = z.object({
   username: z
@@ -50,8 +51,9 @@ export default function Signup() {
     try {
       addUser(values);
       navigate("/login", { replace: true });
+      toastMsg("Successfully created account", "👏");
     } catch (error) {
-      console.log(error);
+      toastMsg(error, "☠");
     }
   };
   return (

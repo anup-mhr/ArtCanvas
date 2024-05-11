@@ -4,6 +4,7 @@ import Tools from "@/components/Tools";
 import { useParams } from "react-router-dom";
 import { getCanvasById, updateCanvas } from "@/services/canvas.service";
 import { updateImages } from "@/services/canvasImg.service";
+import toastMsg from "@/utils/toastMsg";
 
 export default function Canvas() {
   const { canvasId } = useParams();
@@ -41,7 +42,7 @@ export default function Canvas() {
         localStorage.setItem("data", JSON.stringify(data[0]));
         setElement(data[0].element);
       } catch (error) {
-        console.log(error);
+        toastMsg(error.message, "☠");
       }
     }
     fetchElements();
@@ -51,8 +52,12 @@ export default function Canvas() {
     localStorage.setItem("data", JSON.stringify({ id: canvasId, element }));
     const canvasSave = canvasRef.current.toDataURL("image/webp", 0.2);
     return async () => {
-      updateCanvas(canvasId, { id: canvasId, userId, element });
-      updateImages(canvasId, { id: canvasId, userId, img: canvasSave });
+      try {
+        updateCanvas(canvasId, { id: canvasId, userId, element });
+        updateImages(canvasId, { id: canvasId, userId, img: canvasSave });
+      } catch (error) {
+        toastMsg(error.message, "☠");
+      }
     };
   }, [element, canvasId, userId]);
 

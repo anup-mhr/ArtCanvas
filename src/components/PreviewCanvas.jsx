@@ -15,6 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { deleteImages } from "@/services/canvasImg.service";
 import { deleteCanvas } from "@/services/canvas.service";
+import toastMsg from "@/utils/toastMsg";
 
 export default function PreviewCanvas({ canvasData, setData }) {
   const { id, img } = canvasData;
@@ -23,8 +24,9 @@ export default function PreviewCanvas({ canvasData, setData }) {
       deleteCanvas(canvas_id);
       deleteImages(canvas_id);
       setData((prev) => prev.filter((canvas) => canvas.id !== canvas_id));
+      toastMsg("Canvas deleted successfully", "✅");
     } catch (error) {
-      console.log(error);
+      toastMsg(error.message, "☠");
     }
   };
 

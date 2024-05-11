@@ -1,5 +1,6 @@
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Toaster } from "@/components/ui/sonner";
 import PrivateRoute from "./routes/PrivateRoute";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -26,6 +27,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
         </Routes>
       </Router>
+      <Toaster />
     </div>
   );
 }

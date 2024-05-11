@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import toastMsg from "@/utils/toastMsg";
 import { LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -7,6 +8,7 @@ export default function Logout() {
   const handleLogout = () => {
     localStorage.clear();
     navigate("/login", { replace: true });
+    toastMsg("Logout Successful", "👏");
   };
   return (
     <Button
