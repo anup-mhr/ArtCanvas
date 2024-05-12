@@ -9,22 +9,12 @@ import { getUser } from "@/services/users.service";
 import toastMsg from "@/utils/toastMsg";
 
 const formSchema = z.object({
-  email: z
-    .string()
-    .email({
-      message: "Please enter a valid email address.",
-    })
-    .min(1, {
-      message: "Email is required.",
-    }),
-  password: z
-    .string()
-    .min(8, {
-      message: "Password must be at least 8 characters.",
-    })
-    .min(1, {
-      message: "Password is required.",
-    }),
+  email: z.string().min(1, {
+    message: "Email is required.",
+  }),
+  password: z.string().min(1, {
+    message: "Password is required.",
+  }),
 });
 
 export default function Login() {

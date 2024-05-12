@@ -19,7 +19,7 @@ export const getAllUser = () => {
 export const updateUser = (UserId, data) => {
   return new Promise((resolve, reject) => {
     axios
-      .put(`${BASE_URL}/${UserId}`, data)
+      .patch(`${BASE_URL}/${UserId}`, data)
       .then(() => {
         resolve(true);
       })
